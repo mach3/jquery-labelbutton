@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Demo</title>
+	<style>
+
+	body {
+		margin: 0;
+		background-color: #f9f9f9;
+		font-size: 0.9em;
+		font-family: Arial, Helvetica;
+	}
+
+	#container {
+		width: 800px;
+		margin: 0 auto;
+		padding: 2em;
+		background-color: #fff;
+	}
+
+	h1 {
+		font-size: 3em;
+	}
+
+	h2 {
+		font-size: 2em;
+	}
+
+	form {
+		padding: .5em;
+		background-color: #f9f9f9;
+		border: 3px solid #f6f6f6;
+	}
+
+	.group {
+		margin: 2em 0;
+		overflow: hidden;
+	}
+
+	.group label {
+		display: inline-block;
+		float: left;
+		*display: inline;
+		*zoom: 1;
+		margin: 0 .5em .5em 0;
+		padding: 0.5em 1em;
+		background-color: #f6f6f6;
+		border: 2px solid #e6e6e6;
+		cursor: pointer;
+	}
+
+	.group label:hover {
+		background-color: #e6e6e6;
+		border-color: #d6d6d6;
+	}
+
+	.group label.active {
+		background-color: #3e8ad7;
+		color: #fff;
+		border-color: #3e8ad7;
+	}
+
+	.group label input {
+		display: none;
+	}
+
+	</style>
+</head>
+<body>
+
+	<div id="container">
+		<h1>jQuery-labelButton Demo</h1>
+
+
+		<h2>Radio Buttons</h2>
+
+		<div class="group group-radio">
+			<label><input type="radio" name="myradio" value="foo" checked>foo</label>
+			<label><input type="radio" name="myradio" value="bar">bar</label>
+			<label><input type="radio" name="myradio" value="baz">baz</label>
+			<label><input type="radio" name="myradio" value="hoge">hoge</label>
+			<label><input type="radio" name="myradio" value="fuga">fuga</label>
+			<label><input type="radio" name="myradio" value="piyo">piyo</label>
+		</div>
+		<!-- /.group -->
+
+		<script type="text/html" id="template-radio">
+		<label><input type="radio" name="myradio" value="{{value}}">{{value}}</label>
+		</script>
+		<!-- /#template-radio -->
+
+		<form class="form-add-item" data-target=".group-radio" data-template="#template-radio">
+			<label>
+				Add Item:
+				<input type="text" name="labelName">
+			</label>
+			<input type="submit" value="Add">
+		</form>
+		<!-- /.form-add-item -->
+
+
+		<h2>Checkboxes</h2>
+
+		<div class="group group-checkbox">
+			<label><input type="checkbox" name="mycheckbox" value="foo" checked>foo</label>
+			<label><input type="checkbox" name="mycheckbox" value="bar">bar</label>
+			<label><input type="checkbox" name="mycheckbox" value="baz">baz</label>
+			<label><input type="checkbox" name="mycheckbox" value="hoge">hoge</label>
+			<label><input type="checkbox" name="mycheckbox" value="fuga">fuga</label>
+			<label><input type="checkbox" name="mycheckbox" value="piyo">piyo</label>
+		</div>
+		<!-- /.group -->
+
+		<script type="text/html" id="template-checkbox">
+		<label><input type="checkbox" name="mycheckbox" value="{{value}}">{{value}}</label>
+		</script>
+		<!-- /#template-checkbox -->
+
+		<form class="form-add-item" data-target=".group-checkbox" data-template="#template-checkbox">
+			<label>
+				Add Item:
+				<input type="text" name="labelName">
+			</label>
+			<input type="submit" value="Add">
+		</form>
+		<!-- /.form-add-item -->
+
+	</div>
+
+	<script src="../components/jquery/jquery.min.js"></script>
+	<script src="../components/mustache/mustache.js"></script>
+	<script src="../src/jquery-labelbutton.js"></script>
+	<script>
+
+	$("label").labelButton();
+	$("form.form-add-item").on("submit", function(e){
+		var form, value, target, tmpl;
+
+		e.preventDefault();
+
+		form = $(this);
+		value = form.find("input[name=labelName]").val();
+		target = $(form.data("target"));
+		tmpl = $(form.data("template")).html();
+		if(value){
+			target.append(
+				Mustache.render(tmpl, {value: value})
+			);
+		}
+		$("label").labelButton();
+	});
+
+	</script>
+
+</body>
+</html>
